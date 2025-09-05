@@ -1,0 +1,68 @@
+# Rule-based Customer Service Chatbot
+
+def chatbot_response(user_input):
+    user_input = user_input.lower()
+
+    if "hello" in user_input or "hi" in user_input:
+        return "Hello! How can I help you today?"
+    elif "hours" in user_input or "time" in user_input:
+        return "Our store is open from 9 AM to 9 PM, Monday to Saturday."
+    elif "contact" in user_input or "phone" in user_input:
+        return "You can reach us at support@example.com or call +1-234-567-890."
+    elif "track" in user_input or "order" in user_input:
+        return "Please provide your order ID to track your order."
+    elif "refund" in user_input or "return" in user_input:
+        return "Our refund policy allows returns within 30 days with a receipt."
+    elif "bye" in user_input:
+        return "Goodbye! Have a great day."
+    else:
+        return "I'm sorry, I didn't understand that. Could you rephrase?"
+
+# Test the chatbot
+while True:
+    user = input("You: ")
+    if user.lower() in ["quit", "exit"]:
+        print("Chatbot: Thank you for chatting! Goodbye.")
+        break
+    print("Chatbot:", chatbot_response(user))
+import nltk
+from nltk.stem import PorterStemmer
+
+stemmer = PorterStemmer()
+
+# Define intents (keywords for each category)
+intents = {
+    "greeting": ["hello", "hi", "hey"],
+    "hours": ["hours", "time", "open"],
+    "contact": ["contact", "phone", "email"],
+    "order": ["track", "order", "status"],
+    "refund": ["refund", "return", "policy"],
+    "goodbye": ["bye", "goodbye", "see you"]
+}
+
+responses = {
+    "greeting": "Hello! How can I assist you today?",
+    "hours": "We are open from 9 AM to 9 PM, Monday to Saturday.",
+    "contact": "You can email us at support@example.com or call +1-234-567-890.",
+    "order": "Please provide your order ID for tracking.",
+    "refund": "You can request a refund within 30 days with a receipt.",
+    "goodbye": "Goodbye! Have a wonderful day.",
+    "default": "I'm not sure about that. Could you clarify?"
+}
+
+def chatbot_response(user_input):
+    words = nltk.word_tokenize(user_input.lower())
+    for word in words:
+        word = stemmer.stem(word)
+        for intent, keywords in intents.items():
+            if word in keywords:
+                return responses[intent]
+    return responses["default"]
+
+# Run chatbot
+while True:
+    user = input("You: ")
+    if user.lower() in ["quit", "exit"]:
+        print("Chatbot: Thanks for chatting! Goodbye.")
+        break
+    print("Chatbot:", chatbot_response(user))
